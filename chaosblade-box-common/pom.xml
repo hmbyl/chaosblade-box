@@ -50,6 +50,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+            <version>4.34.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
@@ -96,12 +101,12 @@
         <dependency>
             <groupId>net.javacrumbs.shedlock</groupId>
             <artifactId>shedlock-core</artifactId>
-            <version>4.10.2-SNAPSHOT</version>
+            <version>4.34.0</version>
         </dependency>
         <dependency>
             <groupId>net.javacrumbs.shedlock</groupId>
             <artifactId>shedlock-provider-jdbc-template</artifactId>
-            <version>4.10.2-SNAPSHOT</version>
+            <version>4.34.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -146,6 +151,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.49</version>
         </dependency>
     </dependencies>
 

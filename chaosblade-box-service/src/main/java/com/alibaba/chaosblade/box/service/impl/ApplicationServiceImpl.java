@@ -35,7 +35,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -95,6 +97,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Autowired
     private CommandBus commandBus;
+
+    @Value("${chaos.k8s.namespace:}")
+    private String k8sNameSpace;
 
     @Override
     public Response<PageableResponse<UserApplicationSummary>> getUserApplicationSummaries(
@@ -212,8 +217,15 @@ public class ApplicationServiceImpl implements ApplicationService {
             applicationDO);
 
         List<CloudDevice> cloudDevices = applicationDeviceDOIPage.getRecords().stream().map(
-                applicationDeviceDO -> applicationDeviceConverter.convert(applicationDeviceDO)).filter(Objects::nonNull)
-            .collect(Collectors.toList());
+                applicationDeviceDO -> applicationDeviceConverter.convert(applicationDeviceDO)).filter(Objects::nonNull).filter(cloudDevice -> {
+                    if(StringUtils.hasText(k8sNameSpace)) {
+                        if (cloudDevice.getKubNamespace().equals(k8sNameSpace)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    return true;
+                }).collect(Collectors.toList());
 
         //RAM校验权限列表
         PageableResponse<CloudDevice> pageableResponse = PageableResponse.of(
